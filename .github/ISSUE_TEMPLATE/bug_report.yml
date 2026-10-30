@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible Deckhand problem without sharing secrets.
+body:
+  - type: markdown
+    attributes:
+      value: Never include passwords, PINs, prepare tokens, vault files, or unredacted HTTP logs. For security vulnerabilities, see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Deckhand version and installation method
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS, Python, Poetry, terminal, and credential backend
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Prefer demo mode and synthetic data. Do not repeat a junk command after an uncertain result.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics
+      description: Remove secrets, account details, and contact information.

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["poetry-core>=2.2,<3"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "ns-deckhand"
+version = "0.1.2"
+description = "A cautious NationStates card cleanup library and Textual terminal app"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11,<4"
+dependencies = ["httpx>=0.28,<1", "defusedxml>=0.7,<1", "cryptography>=45", "keyring>=25,<26", "platformdirs>=4,<5", "textual>=8.2,<9"]
+
+[tool.poetry]
+requires-poetry = ">=2.2,<3"
+packages = [{ include = "deckhand", from = "src" }]
+include = [
+    { path = "docs/*.md", format = "sdist" },
+    { path = "docs/conf.py", format = "sdist" },
+    { path = "tests/*.py", format = "sdist" },
+    { path = ".github", format = "sdist" },
+    { path = "*.md", format = "sdist" },
+    { path = "poetry.lock", format = "sdist" },
+    { path = "Run-Deckhand.ps1", format = "sdist" },
+    { path = ".readthedocs.yaml", format = "sdist" },
+]
+exclude = ["docs/_build", "**/__pycache__", "**/*.pyc"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8"
+pytest-asyncio = ">=1"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">=8,<9"
+myst-parser = ">=4,<5"
+sphinx-rtd-theme = ">=3,<4"
+
+[project.scripts]
+deckhand = "deckhand.tui:main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
