@@ -2,7 +2,7 @@
 
 A Python library with a Textual terminal app for cleaning NationStates card decks.
 
-**Status: working local beta.** Public API reads and response formats have been checked live. Cleanup is tested with mocked private commands; no real cards were junked during development. Native Windows Hello and Linux desktop keyring integration require testing on the target computer. Windows Hello uses a Passport-specific authentication policy which may not be supported on every Windows configuration; it fails closed without falling back to plaintext, keyring, or ordinary DPAPI.
+**Status: working local beta.** Public API reads and response formats have been checked live. The maintainer has successfully junked and gifted real cards using Deckhand. Automated tests use mocked private commands and synthetic cards. Native Windows Hello and Linux desktop keyring integration require testing on the target computer. Windows Hello uses a Passport-specific authentication policy which may not be supported on every Windows configuration; it fails closed without falling back to plaintext, keyring, or ordinary DPAPI.
 
 ## Run
 
@@ -262,8 +262,8 @@ attempted run. The shown bank afterward is explicitly an estimate; use Refresh
 deck for current bank and deck value. Library callers must consume gift plans
 and rescan as well. Transfers cannot be undone by Deckhand.
 
-The gifting code is verified with mocked HTTP, synthetic cards, and temporary
-credentials only. No live gift command was sent during development.
+The maintainer has successfully gifted real cards using Deckhand. Automated
+gifting tests use mocked HTTP, synthetic cards, and temporary credentials.
 
 ## Table sorting and deck overview
 

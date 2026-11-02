@@ -5,6 +5,10 @@ release notes for compatibility changes.
 
 ## [Unreleased]
 
+### Documentation
+- Correct the README verification status to reflect successful live junking and
+  gifting by the maintainer, separately from mocked automated test coverage.
+
 ## [0.1.3]
 
 ### Added
