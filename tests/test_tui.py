@@ -482,7 +482,8 @@ async def test_about_shows_both_versions_and_main_has_no_progress_bar(tmp_path):
         await pilot.pause()
         assert not app.query(ProgressBar)
         assert app.query_one('#protection-panel').border_title == 'Protections'
-        app.query_one('#sidebar-content').scroll_end(animate=False)
+        await pilot.pause()
+        app.query_one('#about').scroll_visible(animate=False, immediate=True)
         await pilot.pause()
         await pilot.click('#about')
         await pilot.pause()

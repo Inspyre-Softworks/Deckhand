@@ -1140,6 +1140,8 @@ class Deckhand(App):
     def selected_account(self, event):
         if event.value == self.shown_account_id:
             return
+        if self.shown_account_id is None and self.account and event.value == self.account.id:
+            return  # Initial Select value posted before on_mount has shown the account.
         self.account = next((a for a in self.settings.accounts if a.id == event.value), None)
         self.show_account()
 
