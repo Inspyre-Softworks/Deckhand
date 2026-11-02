@@ -13,3 +13,4 @@ htmlcov/
 .env
 .env.*
 .poetry-cache/
+api_usage.sqlite3*

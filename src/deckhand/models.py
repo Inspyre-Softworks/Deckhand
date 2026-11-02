@@ -49,10 +49,14 @@ class Card:
     rarity: Rarity
     copies: int = 1
     name: str = ""
+    market_value: Decimal | None = None
 
     def __post_init__(self):
         if self.copies < 1:
             raise ValueError("Invalid copy count")
+        if self.market_value is not None and (not isinstance(self.market_value, Decimal)
+            or not self.market_value.is_finite() or self.market_value < 0):
+            raise ValueError("Invalid market value")
 
 
 @dataclass(frozen=True)
@@ -60,6 +64,22 @@ class Policy:
     maximum: Rarity = Rarity.COMMON
     protect_collections: bool = True
     protect_listings: bool = True
+    protect_own_nations: bool = True
+    own_nations: tuple[str, ...] = ()
+    protected_names: tuple[str, ...] = ()
+    protected_substrings: tuple[str, ...] = ()
+    fast_execution: bool = False
+
+    def __post_init__(self):
+        if type(self.fast_execution) is not bool:
+            raise ValueError("fast_execution must be a boolean")
+        for field in ("own_nations", "protected_names", "protected_substrings"):
+            values = tuple(dict.fromkeys(name_match(value) for value in getattr(self, field) if name_match(value)))
+            object.__setattr__(self, field, values)
+
+
+def name_match(value):
+    return re.sub(r"[\s_]+", " ", value.strip().casefold())
 
 
 @dataclass(frozen=True)
@@ -93,14 +113,29 @@ class Plan:
     def proceeds(self):
         return sum((c.rarity.junk * c.copies for c in self.candidates), Decimal(0))
 
+    def sale_candidates(self, *, above_junk=False):
+        """Reviewed cards with bids, excluding every non-bid protection."""
+        return tuple(d for d in self.decisions
+            if (d.eligible or d.reason == "Bid exceeds junk value")
+            and d.highest_bid is not None
+            and (d.highest_bid > d.card.rarity.junk if above_junk
+                else d.highest_bid == d.card.rarity.junk))
+
 
 def decide(card, policy, collections, listings, highest_bid):
+    name = name_match(card.name)
     if card.rarity > policy.maximum:
         reason = "Above rarity cutoff"
     elif policy.protect_collections and card.key in collections:
         reason = "Protected collection"
     elif policy.protect_listings and card.key in listings:
         reason = "Listed for sale"
+    elif policy.protect_own_nations and name and name in policy.own_nations:
+        reason = "Protected own nation"
+    elif name and name in policy.protected_names:
+        reason = "Protected nation name"
+    elif name and any(part in name for part in policy.protected_substrings):
+        reason = "Protected name contains match"
     elif highest_bid is not None and highest_bid > card.rarity.junk:
         reason = "Bid exceeds junk value"
     else:

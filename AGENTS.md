@@ -43,8 +43,14 @@ Tests live in tests/. Documentation lives in docs/.
   execution cannot exceed reviewed identities, seasons, or copy counts.
 - Preserve collection/listing protection defaults and the strictly-greater-than
   bid comparison. Use Decimal for prices.
-- Preserve cooperative stop and per-copy revalidation, including the bid read
-  after preparation. Never automatically retry a write with uncertain outcome.
+- Preserve default own-nation and custom name protections. Missing deck names
+  must be resolved before eligibility decisions. Standard junking rechecks live
+  market names before preparation and execution. Name rules invalidate cached plans.
+- Preserve cooperative stop and standard-mode per-copy revalidation, including
+  the bid read after preparation. Fast junking and gifting explicitly trust the
+  reviewed queue and must send only prepare/execute commands during execution.
+  Gift floors use reviewed bank minus confirmed fees, not live bank reads.
+  Never automatically retry a write with uncertain outcome.
 - Share a RateGate across account clients in one event loop. Public reads must
   not send credentials. Reject malformed or ambiguous responses.
 - Credential backends fail closed: no silent downgrade from Hello or keyring.
