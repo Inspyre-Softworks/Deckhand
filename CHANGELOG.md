@@ -5,6 +5,10 @@ release notes for compatibility changes.
 
 ## [Unreleased]
 
+### Fixed
+- Ignore the initial nation selector change posted before the TUI finishes
+  mounting, which could query widgets that did not exist yet on slower hosts.
+
 ### Documentation
 - Correct the README verification status to reflect successful live junking and
   gifting by the maintainer, separately from mocked automated test coverage.

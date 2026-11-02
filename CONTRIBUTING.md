@@ -30,7 +30,7 @@ Avoid unrelated lockfile upgrades. Released wheels remain installable with pip.
 Use synthetic cards, httpx.MockTransport, fake Hello providers, and temporary
 directories. Never use a real nation password, existing vault, or live junk command
 in tests. See [architecture](docs/architecture.md) for module boundaries and
-[security](SECURITY.md) for reporting sensitive bugs.
+[security](docs/security.md) for reporting sensitive bugs.
 
 Run targeted tests while editing, then the full suite before submitting code.
 Add regression coverage for changes to bids, protections, account identity,

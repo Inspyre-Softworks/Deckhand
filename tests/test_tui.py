@@ -323,7 +323,12 @@ async def test_add_account_and_session_credential_modal(tmp_path):
         await pilot.click('#manage-fleet')
         await pilot.pause()
         await pilot.click('#add-account')
-        await pilot.pause()
+        from deckhand.tui import AddAccount
+        for _ in range(50):
+            await pilot.pause()
+            if isinstance(app.screen, AddAccount):
+                break
+        assert isinstance(app.screen, AddAccount)
         app.screen.query_one('#nation', Input).value = 'alpha'
         app.screen.query_one('#mode', Select).value = 'session'
         await pilot.click('#add')
@@ -482,7 +487,8 @@ async def test_about_shows_both_versions_and_main_has_no_progress_bar(tmp_path):
         await pilot.pause()
         assert not app.query(ProgressBar)
         assert app.query_one('#protection-panel').border_title == 'Protections'
-        app.query_one('#sidebar-content').scroll_end(animate=False)
+        await pilot.pause()
+        app.query_one('#about').scroll_visible(animate=False, immediate=True)
         await pilot.pause()
         await pilot.click('#about')
         await pilot.pause()
